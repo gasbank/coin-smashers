@@ -4,14 +4,23 @@ using UnityEngine.UI;
 
 public class BoardPhysics : MonoBehaviour
 {
-    public GameObject coinGroup;
+    public CoinGroup coinGroup;
     public Transform forceApplyPoint;
     public float forceXZScaler = 10.0f;
 	public float forceYScaler = 10.0f;
+    public float torqueScaler = 10.0f;
 	public float period = 10.0f;
+    public float distanceScaleRandomMin = 0.9f;
+    public float distanceScaleRandomMax = 1.1f;
     public Text headTailText;
+    
     private int heads;
     private int tails;
+    
+    void Awake()
+    {
+        Application.targetFrameRate = 60;
+    }
     
     void Update()
     {
@@ -22,21 +31,17 @@ public class BoardPhysics : MonoBehaviour
     {
         var newHeads = 0;
         var newTails = 0;
-        for (int i = 0; i < coinGroup.transform.childCount; i++)
+        for (int i = 0; i < coinGroup.coins.Count; i++)
         {
-            var c = coinGroup.transform.GetChild(i);
-            var rb = c.GetComponent<Rigidbody>();
-            if (rb != null)
+            var rb = coinGroup.coins[i];
+            var d = Vector3.Dot(-rb.transform.forward, Vector3.up);
+            if (d > 0)
             {
-                var d = Vector3.Dot(-rb.transform.forward, Vector3.up);
-                if (d > 0)
-                {
-                    newHeads++;
-                }
-				else
-                {
-                    newTails++;
-                }
+                newHeads++;
+            }
+            else
+            {
+                newTails++;
             }
         }
         
@@ -51,25 +56,23 @@ public class BoardPhysics : MonoBehaviour
     
     public void ApplyRandomForce()
     {
-        //var force = (forceApplyEndPoint.position - forceApplyBeginPoint.position).normalized;
-        //force += Vector3.up * forceYMagnitude;
-        //force *= forceScaler;
-
-        //Debug.Log("Apply force: " + force);
-        for (int i = 0; i < coinGroup.transform.childCount; i++)
+        for (int i = 0; i < coinGroup.coins.Count; i++)
         {
-            var c = coinGroup.transform.GetChild(i);
-            var rb = c.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-				var distanceXZ = c.transform.position - forceApplyPoint.position;
-				distanceXZ = new Vector3(distanceXZ.x, 0, distanceXZ.z);
-				var forceXZ = distanceXZ.normalized * forceXZScaler;
-				var forceY = Vector3.up * forceYScaler;
-				var distanceXZMag = distanceXZ.magnitude * Random.Range(0.9f, 1.1f);
-				var force = (forceXZ + forceY) * GetDistanceForceMultiplier(distanceXZMag);
-                rb.AddForceAtPosition(force, forceApplyPoint.position);
-            }
+            var rb = coinGroup.coins[i];
+            var distanceXZ = rb.transform.position - forceApplyPoint.position;
+            distanceXZ = new Vector3(distanceXZ.x, 0, distanceXZ.z);
+            var distanceXZMag = distanceXZ.magnitude * Random.Range(distanceScaleRandomMin, distanceScaleRandomMax);
+            var distanceCoeff = GetDistanceForceMultiplier(distanceXZMag);
+
+            // 위로 튀어오르는 힘
+            rb.AddForce(Vector3.up * forceYScaler * distanceCoeff, ForceMode.Force);
+            
+            // 회전 속도 제한 해제
+            rb.maxAngularVelocity = Mathf.Infinity;
+            
+            // 회전하는 힘 (힘 원점에서 동전 위치까지의 벡터와 평면상에서 수직이 되는 방향의 토크)
+            var coinToGz = forceApplyPoint.position - rb.position;
+            rb.AddTorque(Vector3.Cross(coinToGz, Vector3.up).normalized * torqueScaler * distanceCoeff, ForceMode.Force);
         }
     }
     
@@ -91,7 +94,6 @@ public class BoardPhysics : MonoBehaviour
 		Debug.Log("hehe");
 		forceApplyPoint.position = ped.pointerPressRaycast.worldPosition;
 		ApplyRandomForce();
-		//Debug.Log("WP: " + ped.worldPosition);
 	}
 
 	public void SetPower(float v)
