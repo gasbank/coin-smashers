@@ -35,15 +35,18 @@ public class BoardPhysics : MonoBehaviour
         var newTails = 0;
         for (int i = 0; i < coinGroup.coins.Count; i++)
         {
-            var rb = coinGroup.coins[i];
-            var d = Vector3.Dot(-rb.transform.forward, Vector3.up);
-            if (d > 0)
+            var coin = coinGroup.coins[i];
+            if (coin.isActiveAndEnabled)
             {
-                newHeads++;
-            }
-            else
-            {
-                newTails++;
+                var d = Vector3.Dot(-coin.transform.forward, Vector3.up);
+                if (d > 0)
+                {
+                    newHeads++;
+                }
+                else
+                {
+                    newTails++;
+                }
             }
         }
 
