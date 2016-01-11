@@ -1,19 +1,20 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
+[DisallowMultipleComponent]
 public class CoinGroup : MonoBehaviour
 {
-    public List<Rigidbody> coins;
+    public List<Coin> coins;
     
     void Awake()
     {
         for (int i = 0; i < transform.childCount; i++)
         {
             var c = transform.GetChild(i);
-            var rb = c.GetComponent<Rigidbody>();
-            if (rb != null)
+            var coin = c.GetComponent<Coin>();
+            if (coin != null)
             {
-                coins.Add(rb);
+                coins.Add(coin);
             }
         }
     }

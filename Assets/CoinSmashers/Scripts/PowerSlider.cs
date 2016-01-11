@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+[DisallowMultipleComponent]
 [RequireComponent(typeof(Slider))]
 public class PowerSlider : MonoBehaviour
 {
