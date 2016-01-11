@@ -13,6 +13,7 @@ public class BoardPhysics : MonoBehaviour
     public float distanceScaleRandomMin = 0.9f;
     public float distanceScaleRandomMax = 1.1f;
     public Text headTailText;
+    public Slider powerSlider;
     
     private int heads;
     private int tails;
@@ -63,16 +64,17 @@ public class BoardPhysics : MonoBehaviour
             distanceXZ = new Vector3(distanceXZ.x, 0, distanceXZ.z);
             var distanceXZMag = distanceXZ.magnitude * Random.Range(distanceScaleRandomMin, distanceScaleRandomMax);
             var distanceCoeff = GetDistanceForceMultiplier(distanceXZMag);
+            var powerCoeff = powerSlider.value;
 
             // 위로 튀어오르는 힘
-            rb.AddForce(Vector3.up * forceYScaler * distanceCoeff, ForceMode.Force);
+            rb.AddForce(Vector3.up * forceYScaler * distanceCoeff * powerCoeff, ForceMode.Force);
             
             // 회전 속도 제한 해제
             rb.maxAngularVelocity = Mathf.Infinity;
             
             // 회전하는 힘 (힘 원점에서 동전 위치까지의 벡터와 평면상에서 수직이 되는 방향의 토크)
             var coinToGz = forceApplyPoint.position - rb.position;
-            rb.AddTorque(Vector3.Cross(coinToGz, Vector3.up).normalized * torqueScaler * distanceCoeff, ForceMode.Force);
+            rb.AddTorque(Vector3.Cross(coinToGz, Vector3.up).normalized * torqueScaler * distanceCoeff * powerCoeff, ForceMode.Force);
         }
     }
     
