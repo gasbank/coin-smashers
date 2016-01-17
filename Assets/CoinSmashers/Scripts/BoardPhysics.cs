@@ -13,9 +13,11 @@ public class BoardPhysics : MonoBehaviour
     public float period = 10.0f;
     public float distanceScaleRandomMin = 0.9f;
     public float distanceScaleRandomMax = 1.1f;
+    public float forceYScalerReal = 1.0f;
     public Text headTailText;
     public Slider powerSlider;
     public Slider lastPowerSlider;
+    public Rigidbody boardRigidbody;
 
     private int heads;
     private int tails;
@@ -99,10 +101,21 @@ public class BoardPhysics : MonoBehaviour
 
     public void OnHitBoard(BaseEventData eventData)
     {
-        PointerEventData ped = eventData as PointerEventData;
+        var ped = eventData as PointerEventData;
         Debug.Log(ped);
         forceApplyPoint.position = ped.pointerPressRaycast.worldPosition;
         ApplyRandomForce();
+        
+        lastPowerSlider.value = powerSlider.value;
+    }
+    
+    public void OnHitBoardReal(BaseEventData eventData)
+    {
+        var ped = eventData as PointerEventData;
+        
+        var powerCoeff = powerSlider.value;
+        
+        boardRigidbody.AddForceAtPosition(-Vector3.up * forceYScalerReal * powerCoeff, ped.pointerPressRaycast.worldPosition);
         
         lastPowerSlider.value = powerSlider.value;
     }
