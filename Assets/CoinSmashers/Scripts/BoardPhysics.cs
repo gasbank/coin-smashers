@@ -14,6 +14,7 @@ public class BoardPhysics : MonoBehaviour
     public float distanceScaleRandomMin = 0.9f;
     public float distanceScaleRandomMax = 1.1f;
     public float forceYScalerReal = 1.0f;
+    public float forceXZScalerReal = 1.0f;
     public Text headTailText;
     public Slider powerSlider;
     public Slider lastPowerSlider;
@@ -115,7 +116,10 @@ public class BoardPhysics : MonoBehaviour
         
         var powerCoeff = powerSlider.value;
         
-        boardRigidbody.AddForceAtPosition(-Vector3.up * forceYScalerReal * powerCoeff, ped.pointerPressRaycast.worldPosition);
+        var forceDir = (-Vector3.up + Vector3.right + Vector3.forward).normalized;
+        var forceY = -Vector3.up * forceYScalerReal;
+        var forceXZ = (Vector3.right + Vector3.forward).normalized * forceXZScalerReal;
+        boardRigidbody.AddForceAtPosition((forceY + forceXZ) * powerCoeff, ped.pointerPressRaycast.worldPosition);
         
         lastPowerSlider.value = powerSlider.value;
     }
