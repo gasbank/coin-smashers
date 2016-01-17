@@ -19,17 +19,17 @@ public class Coin : MonoBehaviour
     
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Coin #" + coinIndex + " Collision Enter - " + collision.contacts.Length + " contact(s)");
-        contacted = true;
+        //Debug.Log(gameObject.name + " Collision Enter - " + collision.contacts.Length + " contact(s)");
     }
     
     void OnCollisionStay(Collision collision)
     {
+        contacted = true;
     }
     
     void OnCollisionExit(Collision collision)
     {
-        Debug.Log("Coin #" + coinIndex + " Collision Exit");
-        contacted = false;
+        //Debug.Log(gameObject.name + " Collision Exit " + collision.contacts.Length);
+        contacted = collision.contacts.Length > 0;
     }
 }

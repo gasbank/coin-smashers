@@ -15,6 +15,7 @@ public class BoardPhysics : MonoBehaviour
     public float distanceScaleRandomMax = 1.1f;
     public Text headTailText;
     public Slider powerSlider;
+    public Slider lastPowerSlider;
 
     private int heads;
     private int tails;
@@ -96,13 +97,14 @@ public class BoardPhysics : MonoBehaviour
         Application.LoadLevel(0);
     }
 
-    public void Test(BaseEventData eventData)
+    public void OnHitBoard(BaseEventData eventData)
     {
         PointerEventData ped = eventData as PointerEventData;
         Debug.Log(ped);
-        Debug.Log("hehe");
         forceApplyPoint.position = ped.pointerPressRaycast.worldPosition;
         ApplyRandomForce();
+        
+        lastPowerSlider.value = powerSlider.value;
     }
 
     public void SetPower(float v)
