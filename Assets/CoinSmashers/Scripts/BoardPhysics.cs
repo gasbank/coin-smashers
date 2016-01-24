@@ -104,6 +104,7 @@ public class BoardPhysics : MonoBehaviour
     {
         var ped = eventData as PointerEventData;
         Debug.Log(ped);
+
         forceApplyPoint.position = ped.pointerPressRaycast.worldPosition;
         ApplyRandomForce();
         
@@ -116,11 +117,16 @@ public class BoardPhysics : MonoBehaviour
         
         var powerCoeff = powerSlider.value;
         
+        // 바닥이 흔들려서 나타나는 물리 시뮬레이터에서 실제로 계산된 힘 적용
         var forceDir = (-Vector3.up + Vector3.right + Vector3.forward).normalized;
         var forceY = -Vector3.up * forceYScalerReal;
         var forceXZ = (Vector3.right + Vector3.forward).normalized * forceXZScalerReal;
         boardRigidbody.AddForceAtPosition((forceY + forceXZ) * powerCoeff, ped.pointerPressRaycast.worldPosition);
-        
+
+        // 잘 뒤집히게 하기 위해 가짜로 적용하는 힘 적용
+        forceApplyPoint.position = ped.pointerPressRaycast.worldPosition;
+        ApplyRandomForce();
+
         lastPowerSlider.value = powerSlider.value;
     }
 
