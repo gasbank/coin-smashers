@@ -12,6 +12,6 @@ public class CoinSmashersCamera : MonoBehaviour
     {
         var d = slider.value - lastSliderValue;
         lastSliderValue = slider.value;
-        transform.RotateAround(Vector3.zero, -Vector3.right, d);
+        //transform.RotateAround(Vector3.zero, -Vector3.right, d);
     }
 }

@@ -8,3 +8,6 @@ coin-smashers.userprefs
 Assembly-CSharp-Editor-firstpass.csproj
 /coin-smashers.CSharp.Editor.Plugins.csproj
 /coin-smashers.CSharp.csproj
+/.vs
+*.blend1
+/coin.apk

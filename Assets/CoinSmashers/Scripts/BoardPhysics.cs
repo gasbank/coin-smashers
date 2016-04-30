@@ -59,7 +59,7 @@ public class BoardPhysics : MonoBehaviour
             heads = newHeads;
             tails = newTails;
 
-            headTailText.text = string.Format("HEADS: {0}\nTAILS: {1}", heads, tails);
+            headTailText.text = string.Format("HEADS: {0} TAILS: {1}", heads, tails);
         }
     }
 
@@ -118,7 +118,7 @@ public class BoardPhysics : MonoBehaviour
         var powerCoeff = powerSlider.value;
         
         // 바닥이 흔들려서 나타나는 물리 시뮬레이터에서 실제로 계산된 힘 적용
-        var forceDir = (-Vector3.up + Vector3.right + Vector3.forward).normalized;
+        //var forceDir = (-Vector3.up + Vector3.right + Vector3.forward).normalized;
         var forceY = -Vector3.up * forceYScalerReal;
         var forceXZ = (Vector3.right + Vector3.forward).normalized * forceXZScalerReal;
         boardRigidbody.AddForceAtPosition((forceY + forceXZ) * powerCoeff, ped.pointerPressRaycast.worldPosition);

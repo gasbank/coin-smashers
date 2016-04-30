@@ -8,11 +8,11 @@ public class Coin : MonoBehaviour
     public Rigidbody rb { get; private set; }
     
     static int COIN_INDEX;
-    int coinIndex;
+    //int coinIndex;
     
     void Awake()
     {
-        coinIndex = ++COIN_INDEX;
+        //coinIndex = ++COIN_INDEX;
         
         rb = GetComponent<Rigidbody>();
     }
