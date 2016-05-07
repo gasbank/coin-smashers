@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [DisallowMultipleComponent]
@@ -97,7 +98,7 @@ public class BoardPhysics : MonoBehaviour
 
     public void ReloadScene()
     {
-        Application.LoadLevel(0);
+        SceneManager.LoadScene(0);
     }
 
     public void OnHitBoard(BaseEventData eventData)

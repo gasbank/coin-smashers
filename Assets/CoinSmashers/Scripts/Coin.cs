@@ -7,7 +7,7 @@ public class Coin : MonoBehaviour
     public bool contacted { get; private set; }
     public Rigidbody rb { get; private set; }
     
-    static int COIN_INDEX;
+    //static int COIN_INDEX;
     //int coinIndex;
     
     void Awake()
