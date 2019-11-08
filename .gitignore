@@ -12,3 +12,5 @@ Assembly-CSharp-Editor-firstpass.csproj
 *.blend1
 /coin.apk
 /pc
+/obj/Debug
+/Logs
